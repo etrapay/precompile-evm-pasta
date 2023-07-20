@@ -134,11 +134,6 @@ interface IPallas {
   /// @return r The resulting scalar value.
   function fromLeBytesModOrder(bytes memory leBytes) external pure returns (uint256 r);
 
-  /// @dev Doubles an affine point on the Pallas Curve.
-  /// @param p The affine point to double.
-  /// @return p2 The resulting affine point after doubling.
-  function double(AffinePoint memory p) external pure returns (AffinePoint memory p2);
-
   /// @dev Computes `base` raised to the power `exponent` modulo `modulus`.
   /// @param base The base value.
   /// @param exponent The exponent value.
