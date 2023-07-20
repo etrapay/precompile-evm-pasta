@@ -23,27 +23,27 @@ const (
 	// You should set a gas cost for each function in your contract.
 	// Generally, you should not set gas costs very low as this may cause your network to be vulnerable to DoS attacks.
 	// There are some predefined gas costs in contract/utils.go that you can use.
-	AffineAddGasCost               uint64 = 1 /* SET A GAS COST HERE */
-	AffineGeneratorGasCost         uint64 = 1 /* SET A GAS COST HERE */
-	DoubleGasCost                  uint64 = 1 /* SET A GAS COST HERE */
-	DoubleAffineGasCost            uint64 = 1 /* SET A GAS COST HERE */
-	DoubleProjectiveGasCost        uint64 = 1 /* SET A GAS COST HERE */
-	FromLeBytesModOrderGasCost     uint64 = 1 /* SET A GAS COST HERE */
-	InverseModGasCost              uint64 = 1 /* SET A GAS COST HERE */
-	IsInfinityAffineGasCost        uint64 = 1 /* SET A GAS COST HERE */
-	IsInfinityProjectiveGasCost    uint64 = 1 /* SET A GAS COST HERE */
-	IsOnCurveGasCost               uint64 = 1 /* SET A GAS COST HERE */
-	MulWithScalarAffineGasCost     uint64 = 1 /* SET A GAS COST HERE */
-	MulWithScalarProjectiveGasCost uint64 = 1 /* SET A GAS COST HERE */
-	NegateAffineGasCost            uint64 = 1 /* SET A GAS COST HERE */
-	NegateProjectiveGasCost        uint64 = 1 /* SET A GAS COST HERE */
-	NegateScalarGasCost            uint64 = 1 /* SET A GAS COST HERE */
-	PowSmallGasCost                uint64 = 1 /* SET A GAS COST HERE */
-	ProjectiveAddGasCost           uint64 = 1 /* SET A GAS COST HERE */
-	ProjectiveGeneratorGasCost     uint64 = 1 /* SET A GAS COST HERE */
-	ToAffineGasCost                uint64 = 1 /* SET A GAS COST HERE */
-	ToProjectiveGasCost            uint64 = 1 /* SET A GAS COST HERE */
-	ValidateScalarFieldGasCost     uint64 = 1 /* SET A GAS COST HERE */
+	AffineAddGasCost               uint64 = 100 /* SET A GAS COST HERE */
+	AffineGeneratorGasCost         uint64 = 100 /* SET A GAS COST HERE */
+	DoubleGasCost                  uint64 = 100 /* SET A GAS COST HERE */
+	DoubleAffineGasCost            uint64 = 100 /* SET A GAS COST HERE */
+	DoubleProjectiveGasCost        uint64 = 100 /* SET A GAS COST HERE */
+	FromLeBytesModOrderGasCost     uint64 = 100 /* SET A GAS COST HERE */
+	InverseModGasCost              uint64 = 100 /* SET A GAS COST HERE */
+	IsInfinityAffineGasCost        uint64 = 100 /* SET A GAS COST HERE */
+	IsInfinityProjectiveGasCost    uint64 = 100 /* SET A GAS COST HERE */
+	IsOnCurveGasCost               uint64 = 100 /* SET A GAS COST HERE */
+	MulWithScalarAffineGasCost     uint64 = 100 /* SET A GAS COST HERE */
+	MulWithScalarProjectiveGasCost uint64 = 100 /* SET A GAS COST HERE */
+	NegateAffineGasCost            uint64 = 100 /* SET A GAS COST HERE */
+	NegateProjectiveGasCost        uint64 = 100 /* SET A GAS COST HERE */
+	NegateScalarGasCost            uint64 = 100 /* SET A GAS COST HERE */
+	PowSmallGasCost                uint64 = 100 /* SET A GAS COST HERE */
+	ProjectiveAddGasCost           uint64 = 100 /* SET A GAS COST HERE */
+	ProjectiveGeneratorGasCost     uint64 = 100 /* SET A GAS COST HERE */
+	ToAffineGasCost                uint64 = 100 /* SET A GAS COST HERE */
+	ToProjectiveGasCost            uint64 = 100 /* SET A GAS COST HERE */
+	ValidateScalarFieldGasCost     uint64 = 100 /* SET A GAS COST HERE */
 )
 
 // CUSTOM CODE STARTS HERE

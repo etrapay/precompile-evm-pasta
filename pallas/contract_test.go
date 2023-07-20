@@ -94,7 +94,10 @@ var (
 			InputFn: func(t testing.TB) []byte {
 				// CUSTOM CODE STARTS HERE
 				// populate test input here
-				testInput := InverseModInput{}
+				testInput := InverseModInput{
+					Fr: big.NewInt(10),
+					M:  big.NewInt(1),
+				}
 				input, err := PackInverseMod(testInput)
 				require.NoError(t, err)
 				return input
@@ -109,7 +112,10 @@ var (
 				// CUSTOM CODE STARTS HERE
 				// set test input to a value here
 				var testInput IPallasAffinePoint
+				testInput.X = big.NewInt(1)
+				testInput.Y = big.NewInt(1)
 				input, err := PackIsInfinityAffine(testInput)
+
 				require.NoError(t, err)
 				return input
 			},
@@ -123,6 +129,9 @@ var (
 				// CUSTOM CODE STARTS HERE
 				// set test input to a value here
 				var testInput IPallasProjectivePoint
+				testInput.X = big.NewInt(1)
+				testInput.Y = big.NewInt(1)
+				testInput.Z = big.NewInt(1)
 				input, err := PackIsInfinityProjective(testInput)
 				require.NoError(t, err)
 				return input
@@ -274,6 +283,9 @@ var (
 				// CUSTOM CODE STARTS HERE
 				// set test input to a value here
 				var testInput IPallasAffinePoint
+				testInput.X = big.NewInt(1)
+				testInput.Y = big.NewInt(1)
+
 				input, err := PackToProjective(testInput)
 				require.NoError(t, err)
 				return input
