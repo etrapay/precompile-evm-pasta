@@ -366,9 +366,19 @@ func doubleProjective(accessibleState contract.AccessibleState, caller common.Ad
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct                   // CUSTOM CODE OPERATES ON INPUT
-	var output DoubleProjectiveOutput // CUSTOM CODE FOR AN OUTPUT
+	var p lib.ProjectivePoint
+	p.X, p.Y, p.Z = inputStruct.X, inputStruct.Y, inputStruct.Z
+
+	res, success := lib.DoubleProjective(curve, p)
+	output := DoubleProjectiveOutput{
+		R: IPallasProjectivePoint{
+			X: res.X,
+			Y: res.Y,
+			Z: res.Z,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackDoubleProjectiveOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -459,10 +469,9 @@ func inverseMod(accessibleState contract.AccessibleState, caller common.Address,
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct // CUSTOM CODE OPERATES ON INPUT
+	fr, m := inputStruct.Fr, inputStruct.M // CUSTOM CODE OPERATES ON INPUT
 
-	var output *big.Int // CUSTOM CODE FOR AN OUTPUT
+	output := lib.InverseMod(fr, m)
 	packedOutput, err := PackInverseModOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -508,10 +517,12 @@ func isInfinityAffine(accessibleState contract.AccessibleState, caller common.Ad
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct // CUSTOM CODE OPERATES ON INPUT
+	var p lib.AffinePoint
 
-	var output bool // CUSTOM CODE FOR AN OUTPUT
+	p.X, p.Y = inputStruct.X, inputStruct.Y
+
+	output := p.IsInfinity()
+
 	packedOutput, err := PackIsInfinityAffineOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -557,10 +568,12 @@ func isInfinityProjective(accessibleState contract.AccessibleState, caller commo
 		return nil, remainingGas, err
 	}
 
+	var p lib.ProjectivePoint
 	// CUSTOM CODE STARTS HERE
-	_ = inputStruct // CUSTOM CODE OPERATES ON INPUT
+	p.X, p.Y, p.Z = inputStruct.X, inputStruct.Y, inputStruct.Z
 
-	var output bool // CUSTOM CODE FOR AN OUTPUT
+	output := p.IsInfinity()
+
 	packedOutput, err := PackIsInfinityProjectiveOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -606,10 +619,11 @@ func isOnCurve(accessibleState contract.AccessibleState, caller common.Address, 
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct // CUSTOM CODE OPERATES ON INPUT
+	var p lib.AffinePoint
 
-	var output bool // CUSTOM CODE FOR AN OUTPUT
+	p.X, p.Y = inputStruct.X, inputStruct.Y // CUSTOM CODE OPERATES ON INPUT
+
+	output := lib.IsOnCurve(curve, p)
 	packedOutput, err := PackIsOnCurveOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -654,9 +668,20 @@ func mulWithScalarAffine(accessibleState contract.AccessibleState, caller common
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct                      // CUSTOM CODE OPERATES ON INPUT
-	var output MulWithScalarAffineOutput // CUSTOM CODE FOR AN OUTPUT
+	var p lib.AffinePoint
+	var scalar *big.Int
+	p.X, p.Y, scalar = inputStruct.P.X, inputStruct.P.Y, inputStruct.Scalar
+
+	// var output MulWithScalarAffineOutput // CUSTOM CODE FOR AN OUTPUT
+	res, success := lib.MulWithScalarAffine(curve, p, scalar)
+	output := MulWithScalarAffineOutput{
+		R: IPallasAffinePoint{
+			X: res.X,
+			Y: res.Y,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackMulWithScalarAffineOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -752,9 +777,19 @@ func negateAffine(accessibleState contract.AccessibleState, caller common.Addres
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct               // CUSTOM CODE OPERATES ON INPUT
-	var output NegateAffineOutput // CUSTOM CODE FOR AN OUTPUT
+	var p lib.AffinePoint
+	p.X, p.Y = inputStruct.X, inputStruct.Y
+
+	r, success := lib.NegateAffine(curve, p)
+
+	output := NegateAffineOutput{
+		R: IPallasAffinePoint{
+			X: r.X,
+			Y: r.Y,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackNegateAffineOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -803,9 +838,19 @@ func negateProjective(accessibleState contract.AccessibleState, caller common.Ad
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct                   // CUSTOM CODE OPERATES ON INPUT
-	var output NegateProjectiveOutput // CUSTOM CODE FOR AN OUTPUT
+	var p lib.ProjectivePoint
+	p.X, p.Y, p.Z = inputStruct.X, inputStruct.Y, inputStruct.Z
+
+	res, success := lib.NegateProjective(curve, p)
+	output := NegateProjectiveOutput{
+		R: IPallasProjectivePoint{
+			X: res.X,
+			Y: res.Y,
+			Z: res.Z,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackNegateProjectiveOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -851,10 +896,9 @@ func negateScalar(accessibleState contract.AccessibleState, caller common.Addres
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct // CUSTOM CODE OPERATES ON INPUT
+	s := inputStruct
+	output := lib.NegateScalar(curve, s)
 
-	var output *big.Int // CUSTOM CODE FOR AN OUTPUT
 	packedOutput, err := PackNegateScalarOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -896,10 +940,9 @@ func powSmall(accessibleState contract.AccessibleState, caller common.Address, a
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct // CUSTOM CODE OPERATES ON INPUT
+	base, exponent, modulus := inputStruct.Base, inputStruct.Exponent, inputStruct.Modulus
+	output := lib.PowSmall(base, exponent, modulus)
 
-	var output *big.Int // CUSTOM CODE FOR AN OUTPUT
 	packedOutput, err := PackPowSmallOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -944,9 +987,21 @@ func projectiveAdd(accessibleState contract.AccessibleState, caller common.Addre
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct                // CUSTOM CODE OPERATES ON INPUT
-	var output ProjectiveAddOutput // CUSTOM CODE FOR AN OUTPUT
+	var p, q lib.ProjectivePoint
+
+	p.X, p.Y, p.Z = inputStruct.P.X, inputStruct.P.Y, inputStruct.P.Z
+	q.X, q.Y, q.Z = inputStruct.Q.X, inputStruct.Q.Y, inputStruct.Q.Z
+
+	res, success := lib.ProjectiveAddition(curve, p, q)
+	output := ProjectiveAddOutput{
+		R: IPallasProjectivePoint{
+			X: res.X,
+			Y: res.Y,
+			Z: res.Z,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackProjectiveAddOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -1028,9 +1083,18 @@ func toAffine(accessibleState contract.AccessibleState, caller common.Address, a
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct           // CUSTOM CODE OPERATES ON INPUT
-	var output ToAffineOutput // CUSTOM CODE FOR AN OUTPUT
+	var p lib.ProjectivePoint
+	p.X, p.Y, p.Z = inputStruct.X, inputStruct.Y, inputStruct.Z
+
+	res, success := lib.ToAffine(curve, p)
+	output := ToAffineOutput{
+		R: IPallasAffinePoint{
+			X: res.X,
+			Y: res.Y,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackToAffineOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -1079,9 +1143,20 @@ func toProjective(accessibleState contract.AccessibleState, caller common.Addres
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct               // CUSTOM CODE OPERATES ON INPUT
-	var output ToProjectiveOutput // CUSTOM CODE FOR AN OUTPUT
+	var p lib.AffinePoint
+
+	p.X, p.Y = inputStruct.X, inputStruct.Y
+
+	res, success := lib.ToProjective(p)
+	output := ToProjectiveOutput{
+		R: IPallasProjectivePoint{
+			X: res.X,
+			Y: res.Y,
+			Z: res.Z,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackToProjectiveOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -1127,10 +1202,9 @@ func validateScalarField(accessibleState contract.AccessibleState, caller common
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct // CUSTOM CODE OPERATES ON INPUT
+	s := inputStruct
+	output := curve.ValidateScalarField(s)
 
-	var output bool // CUSTOM CODE FOR AN OUTPUT
 	packedOutput, err := PackValidateScalarFieldOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
@@ -1149,26 +1223,26 @@ func createPallasPrecompile() contract.StatefulPrecompiledContract {
 	var functions []*contract.StatefulPrecompileFunction
 
 	abiFunctionMap := map[string]contract.RunStatefulPrecompileFunc{
-		"affineAdd":               affineAdd,       // x
-		"affineGenerator":         affineGenerator, // x
-		"doubleAffine":            doubleAffine,    // x
-		"doubleProjective":        doubleProjective,
-		"fromLeBytesModOrder":     fromLeBytesModOrder, // x
-		"inverseMod":              inverseMod,
-		"isInfinityAffine":        isInfinityAffine,
-		"isInfinityProjective":    isInfinityProjective,
-		"isOnCurve":               isOnCurve,
-		"mulWithScalarAffine":     mulWithScalarAffine,
+		"affineAdd":               affineAdd,            // x
+		"affineGenerator":         affineGenerator,      // x
+		"doubleAffine":            doubleAffine,         // x
+		"doubleProjective":        doubleProjective,     // X
+		"fromLeBytesModOrder":     fromLeBytesModOrder,  // x
+		"inverseMod":              inverseMod,           // x
+		"isInfinityAffine":        isInfinityAffine,     // x
+		"isInfinityProjective":    isInfinityProjective, // x
+		"isOnCurve":               isOnCurve,            // x
+		"mulWithScalarAffine":     mulWithScalarAffine,  // X
 		"mulWithScalarProjective": mulWithScalarProjective,
-		"negateAffine":            negateAffine,
-		"negateProjective":        negateProjective,
-		"negateScalar":            negateScalar,
-		"powSmall":                powSmall,
-		"projectiveAdd":           projectiveAdd,
+		"negateAffine":            negateAffine,        // X
+		"negateProjective":        negateProjective,    // x
+		"negateScalar":            negateScalar,        // x
+		"powSmall":                powSmall,            // x
+		"projectiveAdd":           projectiveAdd,       // x
 		"projectiveGenerator":     projectiveGenerator, // x
-		"toAffine":                toAffine,
-		"toProjective":            toProjective,
-		"validateScalarField":     validateScalarField,
+		"toAffine":                toAffine,            // X
+		"toProjective":            toProjective,        // x
+		"validateScalarField":     validateScalarField, // x
 	}
 
 	for name, function := range abiFunctionMap {
