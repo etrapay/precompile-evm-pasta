@@ -161,7 +161,7 @@ func AffineAddition(c PastaCurve, p1, p2 AffinePoint) (AffinePoint, bool) {
 	return AffinePoint{}, false
 }
 
-// IsOnCurve checks if the given point is on the Pallas curve.
+// IsOnCurve checks if the given point is on the curve.
 // The Pallas curve is defined by the equation y^2 = x^3 + 5 mod p, where p is a prime modulus.
 // Function checks that:
 //  1. x != 0
@@ -261,7 +261,7 @@ func FromLeBytesModOrder(curve PastaCurve, leBytes []byte) *big.Int {
 	return res
 }
 
-// MulWithScalar returns the product of the given point and scalar on the Pallas curve.
+// MulWithScalarAffine returns the product of the given point and scalar on the curve in affine form
 // The function uses the "double-and-add" algorithm to efficiently calculate the result.
 func MulWithScalarAffine(curve PastaCurve, p AffinePoint, s *big.Int) (AffinePoint, bool) {
 	tmp := p
@@ -291,6 +291,7 @@ func MulWithScalarAffine(curve PastaCurve, p AffinePoint, s *big.Int) (AffinePoi
 	return r, true
 }
 
+// MulWithScalarProjective returns the product of the given point and scalar on the curve in projective form
 func MulWithScalarProjective(curve PastaCurve, p ProjectivePoint, s *big.Int) (ProjectivePoint, bool) {
 	var ok bool
 	tmp := p
@@ -345,7 +346,7 @@ func NegateProjective(curve PastaCurve, p ProjectivePoint) (ProjectivePoint, boo
 	}, true
 }
 
-// NegateScalar returns the negation of the given scalar on the Pallas curve.
+// NegateScalar returns the negation of the given scalar on the curve.
 func NegateScalar(curve PastaCurve, s *big.Int) *big.Int {
 	rMod := curve.GetR()
 

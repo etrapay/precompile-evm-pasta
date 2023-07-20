@@ -313,7 +313,7 @@ func TestPallasRun(t *testing.T) {
 // 	// Benchmark tests.
 // 	for name, test := range tests {
 // 		b.Run(name, func(b *testing.B) {
-// 			test.Bench(b, Module, state.NewTestStateDB(b))
+// 			test.Bench(b, module, newStateDB(b))
 // 		})
 // 	}
 // }

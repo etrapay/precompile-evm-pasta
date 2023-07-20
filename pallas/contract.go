@@ -1235,26 +1235,26 @@ func createPallasPrecompile() contract.StatefulPrecompiledContract {
 	var functions []*contract.StatefulPrecompileFunction
 
 	abiFunctionMap := map[string]contract.RunStatefulPrecompileFunc{
-		"affineAdd":               affineAdd,            // x
-		"affineGenerator":         affineGenerator,      // x
-		"doubleAffine":            doubleAffine,         // x
-		"doubleProjective":        doubleProjective,     // X
-		"fromLeBytesModOrder":     fromLeBytesModOrder,  // x
-		"inverseMod":              inverseMod,           // x
-		"isInfinityAffine":        isInfinityAffine,     // x
-		"isInfinityProjective":    isInfinityProjective, // x
-		"isOnCurve":               isOnCurve,            // x
-		"mulWithScalarAffine":     mulWithScalarAffine,  // X
+		"affineAdd":               affineAdd,
+		"affineGenerator":         affineGenerator,
+		"doubleAffine":            doubleAffine,
+		"doubleProjective":        doubleProjective,
+		"fromLeBytesModOrder":     fromLeBytesModOrder,
+		"inverseMod":              inverseMod,
+		"isInfinityAffine":        isInfinityAffine,
+		"isInfinityProjective":    isInfinityProjective,
+		"isOnCurve":               isOnCurve,
+		"mulWithScalarAffine":     mulWithScalarAffine,
 		"mulWithScalarProjective": mulWithScalarProjective,
-		"negateAffine":            negateAffine,        // X
-		"negateProjective":        negateProjective,    // x
-		"negateScalar":            negateScalar,        // x
-		"powSmall":                powSmall,            // x
-		"projectiveAdd":           projectiveAdd,       // x
-		"projectiveGenerator":     projectiveGenerator, // x
-		"toAffine":                toAffine,            // X
-		"toProjective":            toProjective,        // x
-		"validateScalarField":     validateScalarField, // x
+		"negateAffine":            negateAffine,
+		"negateProjective":        negateProjective,
+		"negateScalar":            negateScalar,
+		"powSmall":                powSmall,
+		"projectiveAdd":           projectiveAdd,
+		"projectiveGenerator":     projectiveGenerator,
+		"toAffine":                toAffine,
+		"toProjective":            toProjective,
+		"validateScalarField":     validateScalarField,
 	}
 
 	for name, function := range abiFunctionMap {
