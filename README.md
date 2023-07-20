@@ -1,3 +1,11 @@
+# Precompile-EVM with Pallas and Vesta Curves
+
+The Pallas and Vesta curves are part of the Pasta family of elliptic curves, which are used in the construction of zk-SNARKs. These curves have properties that allow for efficient computation and high security. The Pallas curve is used for operations in the scalar field, while the Vesta curve is used for operations in the base field. Both curves are short Weierstrass curves with a simple form, which allows for fast arithmetic operations.
+
+For more information
+ - [Halo2 Docs](https://electriccoin.co/blog/the-pasta-curves-for-halo-2-and-beyond/)
+- [Mina Book](https://o1-labs.github.io/proof-systems/specs/pasta.html)
+
 # Precompile-EVM
 
 Precompile-EVM is a repository for registering precompiles to Subnet-EVM without forking the Subnet-EVM codebase. Subnet-EVM supports registering external precompiles through `precompile/modules` package. By importing Subnet-EVM as a library, you can register your own precompiles to Subnet-EVM and build it together with Subnet-EVM.
