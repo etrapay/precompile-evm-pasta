@@ -5,21 +5,25 @@ import (
 )
 
 const (
-	PALLAS_P = "28948022309329048855892746252171976963363056481941560715954676764349967630337"
-	PALLAS_R = "28948022309329048855892746252171976963363056481941647379679742748393362948097"
+	PALLAS_P              = "28948022309329048855892746252171976963363056481941560715954676764349967630337"
+	PALLAS_R              = "28948022309329048855892746252171976963363056481941647379679742748393362948097"
+	PALLAS_THREE_OVER_TWO = "14474011154664524427946373126085988481681528240970780357977338382174983815170"
 
-	VESTA_P = "28948022309329048855892746252171976963363056481941647379679742748393362948097"
-	VESTA_R = "28948022309329048855892746252171976963363056481941560715954676764349967630337"
+	VESTA_P              = "28948022309329048855892746252171976963363056481941647379679742748393362948097"
+	VESTA_R              = "28948022309329048855892746252171976963363056481941560715954676764349967630337"
+	VESTA_THREE_OVER_TWO = "14474011154664524427946373126085988481681528240970823689839871374196681474050"
 )
 
 type PallasCurve struct {
-	P *big.Int
-	R *big.Int
+	P            *big.Int
+	R            *big.Int
+	ThreeOverTwo *big.Int
 }
 
 type VestaCurve struct {
-	P *big.Int
-	R *big.Int
+	P            *big.Int
+	R            *big.Int
+	ThreeOverTwo *big.Int
 }
 
 type AffinePoint struct {
@@ -35,10 +39,9 @@ type ProjectivePoint struct {
 
 // EllipticCurve represents a generic elliptic curve.
 type PastaCurve interface {
-	AffineGenerator() AffinePoint
-	ProjectiveGenerator() ProjectivePoint
 	GetP() *big.Int
 	GetR() *big.Int
+	GetThreeOverTwo() *big.Int
 	ValidateScalarField(s *big.Int) bool
 }
 
@@ -46,13 +49,25 @@ type PastaCurve interface {
 func (c *PallasCurve) InitPallas() {
 	c.P = new(big.Int)
 	c.R = new(big.Int)
+	c.ThreeOverTwo = new(big.Int)
 	c.P.SetString(PALLAS_P, 10)
 	c.R.SetString(PALLAS_R, 10)
+	c.ThreeOverTwo.SetString(PALLAS_THREE_OVER_TWO, 10)
+}
+
+// InitVesta initializes the Vesta curve.
+func (c *VestaCurve) InitVesta() {
+	c.P = new(big.Int)
+	c.R = new(big.Int)
+	c.ThreeOverTwo = new(big.Int)
+	c.P.SetString(VESTA_P, 10)
+	c.R.SetString(VESTA_R, 10)
+	c.ThreeOverTwo.SetString(VESTA_THREE_OVER_TWO, 10)
 }
 
 // Returns the generator of the Pallas curve in affine coordinates.
-func (c PallasCurve) AffineGenerator() AffinePoint {
-	generatorX, _ := new(big.Int).SetString("28948022309329048855892746252171976963363056481941560715954676764349967630336", 10)
+func AffineGenerator(c PastaCurve) AffinePoint {
+	generatorX := new(big.Int).Sub(c.GetP(), big.NewInt(1))
 	return AffinePoint{
 		X: generatorX,
 		Y: big.NewInt(2),
@@ -60,8 +75,8 @@ func (c PallasCurve) AffineGenerator() AffinePoint {
 }
 
 // Returns the generator of the Pallas curve in projective coordinates.
-func (c PallasCurve) ProjectiveGenerator() ProjectivePoint {
-	generatorX, _ := new(big.Int).SetString("28948022309329048855892746252171976963363056481941560715954676764349967630336", 10)
+func ProjectiveGenerator(c PastaCurve) ProjectivePoint {
+	generatorX := new(big.Int).Sub(c.GetP(), big.NewInt(1))
 	return ProjectivePoint{
 		X: generatorX,
 		Y: big.NewInt(2),
@@ -79,7 +94,10 @@ func (c PallasCurve) GetR() *big.Int {
 	return c.R
 }
 
-// Vesta!!!!!
+// Returns the value (3 / 2) mod p on Pallas curve.
+func (c PallasCurve) GetThreeOverTwo() *big.Int {
+	return c.ThreeOverTwo
+}
 
 // Returns prime modulus of the Vesta curve.
 func (v VestaCurve) GetP() *big.Int {
@@ -89,6 +107,11 @@ func (v VestaCurve) GetP() *big.Int {
 // Returns order of the Vesta curve.
 func (v VestaCurve) GetR() *big.Int {
 	return v.R
+}
+
+// Returns the value (3 / 2) mod p on Vesta curve.
+func (v VestaCurve) GetThreeOverTwo() *big.Int {
+	return v.ThreeOverTwo
 }
 
 // Checks if the given scalar is in the field of the curve.
@@ -197,7 +220,7 @@ func DoubleAffine(curve PastaCurve, p AffinePoint) (AffinePoint, bool) {
 	pMod := curve.GetP()
 
 	// Calculate the value (3 / 2) mod p.
-	threeOverTwo, _ := new(big.Int).SetString("14474011154664524427946373126085988481681528240970780357977338382174983815170", 10)
+	threeOverTwo := curve.GetThreeOverTwo()
 
 	// Calculate yInv = y^-1 mod p.
 	yInv := new(big.Int).ModInverse(p.Y, pMod)

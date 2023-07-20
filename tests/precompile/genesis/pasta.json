@@ -24,6 +24,9 @@
         },
         "pallasConfig": {
             "blockTimestamp": 0
+        },
+        "vestaConfig": {
+            "blockTimestamp": 0
         }
     },
     "alloc": {
