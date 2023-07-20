@@ -291,6 +291,29 @@ func MulWithScalarAffine(curve PastaCurve, p AffinePoint, s *big.Int) (AffinePoi
 	return r, true
 }
 
+func MulWithScalarProjective(curve PastaCurve, p ProjectivePoint, s *big.Int) (ProjectivePoint, bool) {
+	var ok bool
+	tmp := p
+	r := ProjectivePoint{big.NewInt(0), big.NewInt(0), big.NewInt(0)}
+
+	for i := 0; i < 256; i++ {
+		bit := new(big.Int).And(s, big.NewInt(1))
+		s.Div(s, big.NewInt(2))
+		if bit.Cmp(big.NewInt(1)) == 0 {
+			r, ok = ProjectiveAddition(curve, r, tmp)
+			if !ok {
+				return ProjectivePoint{}, false
+			}
+		}
+		tmp, ok = DoubleProjective(curve, tmp)
+		if !ok {
+			return ProjectivePoint{}, false
+		}
+	}
+
+	return r, true
+}
+
 // NegateAffine calculates the negation of a point on the curve.
 // Negating a point (x, y) on the curve results in the point (x, -y).
 func NegateAffine(curve PastaCurve, p AffinePoint) (AffinePoint, bool) {

@@ -47,20 +47,6 @@ var (
 			ReadOnly:    false,
 			ExpectedErr: vmerrs.ErrOutOfGas.Error(),
 		},
-		"insufficient gas for double should fail": {
-			Caller: common.Address{1},
-			InputFn: func(t testing.TB) []byte {
-				// CUSTOM CODE STARTS HERE
-				// set test input to a value here
-				var testInput IPallasAffinePoint
-				input, err := PackDouble(testInput)
-				require.NoError(t, err)
-				return input
-			},
-			SuppliedGas: DoubleGasCost - 1,
-			ReadOnly:    false,
-			ExpectedErr: vmerrs.ErrOutOfGas.Error(),
-		},
 		"insufficient gas for doubleAffine should fail": {
 			Caller: common.Address{1},
 			InputFn: func(t testing.TB) []byte {

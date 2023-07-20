@@ -726,9 +726,21 @@ func mulWithScalarProjective(accessibleState contract.AccessibleState, caller co
 		return nil, remainingGas, err
 	}
 
-	// CUSTOM CODE STARTS HERE
-	_ = inputStruct                          // CUSTOM CODE OPERATES ON INPUT
-	var output MulWithScalarProjectiveOutput // CUSTOM CODE FOR AN OUTPUT
+	var p lib.ProjectivePoint
+	p.X, p.Y, p.Z = inputStruct.P.X, inputStruct.P.Y, inputStruct.P.Z
+
+	scalar := inputStruct.Scalar
+	res, success := lib.MulWithScalarProjective(curve, p, scalar)
+
+	output := MulWithScalarProjectiveOutput{
+		R: IPallasProjectivePoint{
+			X: res.X,
+			Y: res.Y,
+			Z: res.Z,
+		},
+		Success: success,
+	}
+
 	packedOutput, err := PackMulWithScalarProjectiveOutput(output)
 	if err != nil {
 		return nil, remainingGas, err
