@@ -16,6 +16,7 @@ import (
 	// ADD YOUR PRECOMPILE HERE
 	//_ "github.com/ava-labs/precompile-evm/{yourprecompilepkg}"
 	_ "github.com/ava-labs/precompile-evm/pallas"
+	_ "github.com/ava-labs/precompile-evm/vesta"
 )
 
 const Version = "v0.1.1"
